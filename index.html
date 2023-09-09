@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>🎹Turn on the sound!🎹</title>
+    <style type="text/css">
+        body, html { margin: 0px; padding: 0px; background: #b2b2b2 }
+        .box1 { display: flex; justify-content: center; padding-top: 300px; }
+        .singer { margin: 0 25px; cursor: pointer;  filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.5))}
+    </style>
+</head>
+
+<body>
+<div class="box1">
+    <img class="singer" src="sleep.png" data-audio="1.mp3">
+    <img class="singer" src="sleep.png" data-audio="2.mp3">
+    <img class="singer" src="sleep.png" data-audio="3.mp3">
+</div>
+
+<script type="text/javascript">
+    const singerImages = document.querySelectorAll(".singer");
+    const audioElements = {};
+    let awakeCount = 0;
+
+    const updateBackgroundColor = () => {
+        let backgroundColor = "#c1a161";
+        if (awakeCount === 2) {
+            backgroundColor = "#e2cf81";
+        } else if (awakeCount === 3) {
+            backgroundColor = "#fffac2";
+        }
+        document.body.style.background = backgroundColor; // 배경색을 변경합니다.
+    };
+
+    singerImages.forEach((image) => {
+        const audioSrc = image.getAttribute("data-audio");
+        let audio = new Audio(audioSrc);
+        audioElements[image] = audio;
+
+        image.onclick = function () {
+            if (this.src.includes("awake.png")) {
+                this.src = "sleep.png";
+                audio.pause();
+                audio = new Audio(audioSrc);
+                awakeCount--;
+            } else {
+                this.src = "awake.png";
+                audio.play();
+                awakeCount++;
+            }
+            updateBackgroundColor();
+        };
+    });
+</script>
+
+</body>
+</html>
